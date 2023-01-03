@@ -30,7 +30,7 @@ makeType model@Model { modelName, fields } = do
                     RecC
                         modelName'
                         (
-                            fmap (\(lowerField, upperField, _) -> (
+                            fmap (\Field {lowerField = lowerField, upperField = upperField} -> (
                                 mkName lowerField,
                                 Bang NoSourceUnpackedness NoSourceStrictness,
                                 ConT (mkName (modelName <> upperField))

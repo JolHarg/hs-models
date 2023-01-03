@@ -19,17 +19,17 @@ import           Servant.API
 
 type MaybeUTCTime = Maybe UTCTime
 
-addDefaultFields ∷ [(String, ModelName, Name)] → [(String, ModelName, Name)]
+addDefaultFields ∷ Fields → Fields
 addDefaultFields fields = [
-        ("id", "Id", ''UUID)
+        Field "id" "Id" ''UUID
     ] <> fields <> [
-        ("createdAt", "CreatedAt", ''UTCTime),
-        ("updatedAt", "UpdatedAt", ''MaybeUTCTime),
-        ("deletedAt", "DeletedAt", ''MaybeUTCTime)
+        Field "createdAt" "CreatedAt" ''UTCTime,
+        Field"updatedAt" "UpdatedAt" ''MaybeUTCTime,
+        Field "deletedAt" "DeletedAt" ''MaybeUTCTime
     ]
 
 makeFieldTypes ∷ Model → Q [Dec]
-makeFieldTypes Model { modelName, fields } = mapM (\(_, upperField, typeName) -> do
+makeFieldTypes Model { modelName, fields } = mapM (\Field {upperField = upperField, typeName = typeName} -> do
     let fieldName = mkName (modelName <> upperField)
     let getName = mkName ("get" <> modelName <> upperField)
     pure $ NewtypeD

@@ -1,12 +1,16 @@
 module Data.Model where
 
-import           Language.Haskell.TH
+import Language.Haskell.TH ( Name )
 
 type ModelName = String
 type FieldName = String
 type Endpoint = String
 
-type Field = (FieldName, FieldName, Name)
+data Field = Field {
+    lowerField :: FieldName,
+    upperField :: FieldName,
+    typeName :: Name
+}
 
 type Fields = [Field]
 
