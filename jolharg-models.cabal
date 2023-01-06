@@ -16,6 +16,8 @@ library
  -- other-extensions:
   build-depends:      base >= 4.12 && < 5
                     , aeson
+                    , containers
+                    , jolharg-web-types
                     -- @TODO move the servant part out
                     , servant
                     , template-haskell

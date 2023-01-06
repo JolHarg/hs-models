@@ -21,15 +21,15 @@ type MaybeUTCTime = Maybe UTCTime
 
 addDefaultFields ∷ Fields → Fields
 addDefaultFields fields = [
-        Field "id" "Id" ''UUID
+        Field { lowerField = "id", upperField = "Id", typeName = ''UUID }
     ] <> fields <> [
-        Field "createdAt" "CreatedAt" ''UTCTime,
-        Field"updatedAt" "UpdatedAt" ''MaybeUTCTime,
-        Field "deletedAt" "DeletedAt" ''MaybeUTCTime
+        Field { lowerField = "createdAt", upperField = "CreatedAt", typeName = ''UTCTime },
+        Field { lowerField = "updatedAt", upperField = "UpdatedAt", typeName = ''MaybeUTCTime },
+        Field { lowerField = "deletedAt", upperField = "DeletedAt", typeName = ''MaybeUTCTime }
     ]
 
 makeFieldTypes ∷ Model → Q [Dec]
-makeFieldTypes Model { modelName, fields } = mapM (\Field {upperField = upperField, typeName = typeName} -> do
+makeFieldTypes Model { modelName, fields } = mapM (\Field { upperField = upperField, typeName = typeName } -> do
     let fieldName = mkName (modelName <> upperField)
     let getName = mkName ("get" <> modelName <> upperField)
     pure $ NewtypeD
