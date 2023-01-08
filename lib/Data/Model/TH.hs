@@ -4,7 +4,6 @@
 {-# LANGUAGE DeriveGeneric         #-}
 {-# LANGUAGE DerivingVia           #-}
 {-# LANGUAGE NamedFieldPuns        #-}
-
 {-# LANGUAGE TemplateHaskellQuotes #-}
 
 module Data.Model.TH where
