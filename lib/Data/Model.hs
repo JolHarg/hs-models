@@ -1,7 +1,7 @@
 module Data.Model where
 
-import           Data.Map (Map)
-import           Data.Set (Set)
+import           Data.Map            (Map)
+import           Data.Set            (Set)
 import           Language.Haskell.TH (Name)
 import           Types.UserType
 
@@ -19,16 +19,16 @@ data AuthState = Unauthenticated | Authenticated UserType
 
 newtype CRUDPermissions = CRUDPermissions (Map AuthState (Set CRUDPermission))
 
-unauthenticatedPermissions :: CRUDPermissions
+unauthenticatedPermissions ∷ CRUDPermissions
 unauthenticatedPermissions = undefined
 
-normalPermissions :: CRUDPermissions
+normalPermissions ∷ CRUDPermissions
 normalPermissions = undefined
 
-adminPermissions :: CRUDPermissions
+adminPermissions ∷ CRUDPermissions
 adminPermissions = undefined
 
-superuserPermissions :: CRUDPermissions
+superuserPermissions ∷ CRUDPermissions
 superuserPermissions = undefined
 
 data Field = Field {
