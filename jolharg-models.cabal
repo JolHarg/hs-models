@@ -34,6 +34,7 @@ library
                       -Wno-missing-export-lists
                       -Wno-implicit-prelude
                       -Wno-missing-local-signatures
+                      -Wno-missing-safe-haskell-mode
   else
     ghc-options:      -Wall -Werror
                       -Weverything
