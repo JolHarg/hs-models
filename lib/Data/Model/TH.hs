@@ -8,13 +8,13 @@
 
 module Data.Model.TH where
 
-import           Data.Aeson
-import           Data.Data
-import           Data.Model
-import           Data.Time
-import           Data.UUID.Types
-import           Language.Haskell.TH
-import           Servant.API
+import Data.Aeson
+import Data.Data
+import Data.Model
+import Data.Time
+import Data.UUID.Types
+import Language.Haskell.TH
+import Servant.API
 
 type MaybeUTCTime = Maybe UTCTime
 

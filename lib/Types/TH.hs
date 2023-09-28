@@ -8,12 +8,12 @@
 
 module Types.TH where
 
-import           Data.Aeson
-import           Data.Data
-import           Data.Model
-import           Data.Model.TH
-import           GHC.Generics        (Generic)
-import           Language.Haskell.TH
+import Data.Aeson
+import Data.Data
+import Data.Model
+import Data.Model.TH
+import GHC.Generics        (Generic)
+import Language.Haskell.TH
 
 makeType ∷ Model → DecsQ
 makeType model@Model { modelName, fields } = do
