@@ -1,9 +1,9 @@
 module Data.Model where
 
-import           Data.Map            (Map)
-import           Data.Set            (Set)
-import           Language.Haskell.TH (Name)
-import           Types.UserType
+import Data.Map            (Map)
+import Data.Set            (Set)
+import Language.Haskell.TH (Name)
+import Types.UserType
 
 type ModelName = String
 type FieldName = String
@@ -48,6 +48,17 @@ data Model = Model {
     pluralModelName :: ModelName,
     endpoint        :: Endpoint,
     pluralEndpoint  :: Endpoint,
-    fields          :: Fields
+    fields          :: Fields,
+    extraJoinFields :: Fields
     -- crudPermissions :: CRUDPermissions
+}
+
+defaultModel ∷ Model
+defaultModel = Model {
+    modelName = error "Required: model name",
+    pluralModelName = error "Required: plural model name",
+    endpoint = error "Required: endpoint",
+    pluralEndpoint = error "Required: plural model endpoint",
+    fields = error "Required: fields",
+    extraJoinFields = []
 }
