@@ -1,3 +1,5 @@
+{-# LANGUAGE Unsafe #-}
+
 module Data.Model where
 
 import Data.Map            (Map)
@@ -41,6 +43,13 @@ data Field = Field {
     -- showInTable :: TableDisplayOption
 }
 
+defaultField :: Field
+defaultField = Field {
+    lowerField = error "Required: lower field",
+    upperField = error "Required: upper field",
+    typeName = error "Required: type name"
+}
+
 type Fields = [Field]
 
 data Model = Model {
@@ -49,7 +58,7 @@ data Model = Model {
     endpoint        :: Endpoint,
     pluralEndpoint  :: Endpoint,
     fields          :: Fields,
-    extraJoinFields :: Fields
+    extraViewFields :: Fields
     -- crudPermissions :: CRUDPermissions
 }
 
@@ -60,5 +69,5 @@ defaultModel = Model {
     endpoint = error "Required: endpoint",
     pluralEndpoint = error "Required: plural model endpoint",
     fields = error "Required: fields",
-    extraJoinFields = []
+    extraViewFields = []
 }
