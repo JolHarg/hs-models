@@ -5,7 +5,7 @@
 {-# LANGUAGE DerivingVia           #-}
 {-# LANGUAGE NamedFieldPuns        #-}
 {-# LANGUAGE TemplateHaskellQuotes #-}
-{-# LANGUAGE Unsafe #-}
+{-# LANGUAGE Unsafe                #-}
 
 module Types.TH where
 
@@ -178,7 +178,7 @@ makeDeleteType model@Model { modelName, fields } = do
                 ]
         ]
 
-makeCRUDTypes :: Model -> DecsQ
+makeCRUDTypes ∷ Model → DecsQ
 makeCRUDTypes model = do
     createType <- makeCreateType model
     retrieveType <- makeRetrieveType model

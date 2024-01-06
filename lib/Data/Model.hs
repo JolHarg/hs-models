@@ -43,7 +43,7 @@ data Field = Field {
     -- showInTable :: TableDisplayOption
 }
 
-defaultField :: Field
+defaultField ∷ Field
 defaultField = Field {
     lowerField = error "Required: lower field",
     upperField = error "Required: upper field",

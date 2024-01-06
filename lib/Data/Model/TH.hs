@@ -5,7 +5,7 @@
 {-# LANGUAGE DerivingVia           #-}
 {-# LANGUAGE NamedFieldPuns        #-}
 {-# LANGUAGE TemplateHaskellQuotes #-}
-{-# LANGUAGE Unsafe #-}
+{-# LANGUAGE Unsafe                #-}
 
 module Data.Model.TH where
 
