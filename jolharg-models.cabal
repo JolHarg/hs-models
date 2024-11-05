@@ -71,7 +71,9 @@ test-suite jolharg-models-test
     NoGeneralisedNewtypeDeriving
     OverloadedStrings
     UnicodeSyntax
+
   main-is:            Spec.hs
+
   if (impl(ghcjs) || impl(ghc <9.2))
     ghc-options:
       -Wall -Werror -threaded -rtsopts -with-rtsopts=-N -Weverything
@@ -82,6 +84,7 @@ test-suite jolharg-models-test
       -Wno-missed-specialisations -Wno-missing-role-annotations
       -Wno-missing-kind-signatures -Wno-missing-poly-kind-signatures
       -Wno-unrecognised-warning-flags -Wno-missed-specialisations
+
   else
     ghc-options:
       -Wall -Werror -threaded -rtsopts -with-rtsopts=-N -Weverything
@@ -92,9 +95,11 @@ test-suite jolharg-models-test
       -Wno-missing-poly-kind-signatures -Wno-all-missed-specialisations
       -Wno-missed-specialisations -Wno-missing-role-annotations
       -Wno-unrecognised-warning-flags -Wno-missed-specialisations
+
   build-depends:
     , base   >=4.12 && <5
     , hspec
+
   -- , jolharg-models
   -- , hspec-core
   -- , hspec-expectations
