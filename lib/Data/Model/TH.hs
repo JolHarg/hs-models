@@ -13,6 +13,7 @@ import Data.Aeson
 import Data.Data
 import Data.Model
 import Data.Time
+import Data.Traversable
 import Data.UUID.Types
 import Language.Haskell.TH
 import Servant.API
@@ -46,7 +47,7 @@ addDefaultFieldsForDelete fields = [
     ] <> fields
 
 makeCreateFieldTypes ∷ Model → Q [Dec]
-makeCreateFieldTypes Model { modelName, fields } = mapM (\Field { upperField = upperField, typeName = typeName } -> do
+makeCreateFieldTypes Model { modelName, fields } = traverse (\Field { upperField = upperField, typeName = typeName } -> do
     let fieldName = mkName ("Create" <> modelName <> upperField)
     let getName = mkName ("getCreate" <> modelName <> upperField)
     pure $ NewtypeD
@@ -89,7 +90,7 @@ makeCreateFieldTypes Model { modelName, fields } = mapM (\Field { upperField = u
     ) fields
 
 makeRetrieveFieldTypes ∷ Model → Q [Dec]
-makeRetrieveFieldTypes Model { modelName, fields, extraViewFields } = mapM (\Field { upperField = upperField, typeName = typeName } -> do
+makeRetrieveFieldTypes Model { modelName, fields, extraViewFields } = traverse (\Field { upperField = upperField, typeName = typeName } -> do
     let fieldName = mkName (modelName <> upperField)
     let getName = mkName ("get" <> modelName <> upperField)
     pure $ NewtypeD
@@ -133,7 +134,7 @@ makeRetrieveFieldTypes Model { modelName, fields, extraViewFields } = mapM (\Fie
 
 
 makeUpdateFieldTypes ∷ Model → Q [Dec]
-makeUpdateFieldTypes Model { modelName, fields } = mapM (\Field { upperField = upperField, typeName = typeName } -> do
+makeUpdateFieldTypes Model { modelName, fields } = traverse (\Field { upperField = upperField, typeName = typeName } -> do
     let fieldName = mkName ("Update" <> modelName <> upperField)
     let getName = mkName ("getUpdate" <> modelName <> upperField)
     pure $ NewtypeD
@@ -177,7 +178,7 @@ makeUpdateFieldTypes Model { modelName, fields } = mapM (\Field { upperField = u
 
 
 makeDeleteFieldTypes ∷ Model → Q [Dec]
-makeDeleteFieldTypes Model { modelName, fields } = mapM (\Field { upperField = upperField, typeName = typeName } -> do
+makeDeleteFieldTypes Model { modelName, fields } = traverse (\Field { upperField = upperField, typeName = typeName } -> do
     let fieldName = mkName ("Delete" <> modelName <> upperField)
     let getName = mkName ("getDelete" <> modelName <> upperField)
     pure $ NewtypeD
