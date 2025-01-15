@@ -13,7 +13,6 @@ import Data.Aeson
 import Data.Data
 import Data.Model
 import Data.Time
-import Data.Traversable
 import Data.UUID.Types
 import Language.Haskell.TH
 import Servant.API
