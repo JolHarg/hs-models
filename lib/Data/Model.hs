@@ -6,6 +6,7 @@ import Data.Map            (Map)
 import Data.Set            (Set)
 import Language.Haskell.TH (Name)
 import Types.UserType
+import GHC.Stack (HasCallStack)
 
 type ModelName = String
 type FieldName = String
@@ -43,7 +44,7 @@ data Field = Field {
     -- showInTable :: TableDisplayOption
 }
 
-defaultField ∷ Field
+defaultField ∷ HasCallStack => Field
 defaultField = Field {
     lowerField = error "Required: lower field",
     upperField = error "Required: upper field",
@@ -62,7 +63,7 @@ data Model = Model {
     -- crudPermissions :: CRUDPermissions
 }
 
-defaultModel ∷ Model
+defaultModel ∷ HasCallStack => Model
 defaultModel = Model {
     modelName = error "Required: model name",
     pluralModelName = error "Required: plural model name",
