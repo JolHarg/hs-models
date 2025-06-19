@@ -1,9 +1,5 @@
-{-# LANGUAGE DataKinds             #-}
 {-# LANGUAGE DeriveAnyClass        #-}
-{-# LANGUAGE DeriveDataTypeable    #-}
-{-# LANGUAGE DeriveGeneric         #-}
 {-# LANGUAGE DerivingVia           #-}
-{-# LANGUAGE NamedFieldPuns        #-}
 {-# LANGUAGE TemplateHaskellQuotes #-}
 {-# LANGUAGE Unsafe                #-}
 
