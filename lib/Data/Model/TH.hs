@@ -22,29 +22,35 @@ type MaybeUUID = Maybe UUID
 -- RetrieveEntity is the "normal" one except with extra fields!
 -- UpdateEntity has everything Maybe'd except Id - doesn't need ToHttpApiData
 -- DeleteEntity is a where clause so everything Maybe'd - doesn't need ToHttpApiData
+
+-- nothing, just added for consistency for now
+addDefaultFieldsForCreate ∷ Fields → Fields
+addDefaultFieldsForCreate fields = fields
+
 addDefaultFieldsForRetrieve ∷ Fields → Fields
 addDefaultFieldsForRetrieve fields = [
-        defaultField { lowerField = "id", upperField = "Id", typeName = ''UUID }
+        defaultField { lowerField = "id", upperField = "Id", dbField = "id", typeName = ''UUID }
     ] <> fields <> [
-        defaultField { lowerField = "createdAt", upperField = "CreatedAt", typeName = ''UTCTime }, -- Nothing for insertion
-        defaultField { lowerField = "updatedAt", upperField = "UpdatedAt", typeName = ''MaybeUTCTime }
-        -- defaultField { lowerField = "deletedAt", upperField = "DeletedAt", typeName = ''MaybeUTCTime } -- @TODO admin see / undelete later
+        defaultField { lowerField = "createdBy", upperField = "CreatedBy", dbField = "created_by", typeName = ''UUID },
+        defaultField { lowerField = "createdAt", upperField = "CreatedAt", dbField = "created_at", typeName = ''UTCTime }, -- Nothing for insertion
+        defaultField { lowerField = "updatedAt", upperField = "UpdatedAt", dbField = "updated_at", typeName = ''MaybeUTCTime }
+        -- defaultField { lowerField = "deletedAt", upperField = "DeletedAt", dbField = "deleted_at", typeName = ''MaybeUTCTime } -- @TODO admin see / undelete later
     ]
 
 addDefaultFieldsForUpdate ∷ Fields → Fields
 addDefaultFieldsForUpdate fields = [
-        defaultField { lowerField = "id", upperField = "Id", typeName = ''UUID }
+        defaultField { lowerField = "id", upperField = "Id", dbField = "id", typeName = ''UUID }
     ] <> fields
 
 addDefaultFieldsForDelete ∷ Fields → Fields
 addDefaultFieldsForDelete fields = [
-        defaultField { lowerField = "id", upperField = "Id", typeName = ''UUID }
+        defaultField { lowerField = "id", upperField = "Id", dbField = "id", typeName = ''UUID }
     ] <> fields
 
 makeCreateFieldTypes ∷ Model → Q [Dec]
-makeCreateFieldTypes Model { modelName, fields } = traverse (\Field { upperField = upperField, typeName = typeName } -> do
-    let fieldName = mkName ("Create" <> modelName <> upperField)
-    let getName = mkName ("getCreate" <> modelName <> upperField)
+makeCreateFieldTypes Model { singularType, createFields = Just fields } = traverse (\Field { upperField = upperField, typeName = typeName } -> do
+    let fieldName = mkName ("Create" <> singularType <> upperField)
+    let getName = mkName ("getCreate" <> singularType <> upperField)
     pure $ NewtypeD
         []
         fieldName
@@ -82,12 +88,13 @@ makeCreateFieldTypes Model { modelName, fields } = traverse (\Field { upperField
                     ConT ''Data
                 ]
         ]
-    ) fields
+    ) (addDefaultFieldsForCreate fields)
+makeCreateFieldTypes Model { createFields = Nothing } = pure []
 
 makeRetrieveFieldTypes ∷ Model → Q [Dec]
-makeRetrieveFieldTypes Model { modelName, fields, extraViewFields } = traverse (\Field { upperField = upperField, typeName = typeName } -> do
-    let fieldName = mkName (modelName <> upperField)
-    let getName = mkName ("get" <> modelName <> upperField)
+makeRetrieveFieldTypes Model { singularType, retrieveFields = Just fields } = traverse (\Field { upperField = upperField, typeName = typeName } -> do
+    let fieldName = mkName (singularType <> upperField)
+    let getName = mkName ("get" <> singularType <> upperField)
     pure $ NewtypeD
         []
         fieldName
@@ -125,13 +132,14 @@ makeRetrieveFieldTypes Model { modelName, fields, extraViewFields } = traverse (
                     ConT ''Data
                 ]
         ]
-    ) (addDefaultFieldsForRetrieve (fields <> extraViewFields))
+    ) (addDefaultFieldsForRetrieve fields)
+makeRetrieveFieldTypes Model { retrieveFields = Nothing } = pure []
 
 
 makeUpdateFieldTypes ∷ Model → Q [Dec]
-makeUpdateFieldTypes Model { modelName, fields } = traverse (\Field { upperField = upperField, typeName = typeName } -> do
-    let fieldName = mkName ("Update" <> modelName <> upperField)
-    let getName = mkName ("getUpdate" <> modelName <> upperField)
+makeUpdateFieldTypes Model { singularType, updateFields = Just fields } = traverse (\Field { upperField = upperField, typeName = typeName } -> do
+    let fieldName = mkName ("Update" <> singularType <> upperField)
+    let getName = mkName ("getUpdate" <> singularType <> upperField)
     pure $ NewtypeD
         []
         fieldName
@@ -170,12 +178,13 @@ makeUpdateFieldTypes Model { modelName, fields } = traverse (\Field { upperField
                 ]
         ]
     ) (addDefaultFieldsForUpdate fields)
+makeUpdateFieldTypes Model { updateFields = Nothing } = pure []
 
 
 makeDeleteFieldTypes ∷ Model → Q [Dec]
-makeDeleteFieldTypes Model { modelName, fields } = traverse (\Field { upperField = upperField, typeName = typeName } -> do
-    let fieldName = mkName ("Delete" <> modelName <> upperField)
-    let getName = mkName ("getDelete" <> modelName <> upperField)
+makeDeleteFieldTypes Model { singularType, deleteFields = Just fields } = traverse (\Field { upperField = upperField, typeName = typeName } -> do
+    let fieldName = mkName ("Delete" <> singularType <> upperField)
+    let getName = mkName ("getDelete" <> singularType <> upperField)
     pure $ NewtypeD
         []
         fieldName
@@ -214,3 +223,4 @@ makeDeleteFieldTypes Model { modelName, fields } = traverse (\Field { upperField
                 ]
         ]
     ) (addDefaultFieldsForDelete fields)
+makeDeleteFieldTypes Model { deleteFields = Nothing } = pure []
