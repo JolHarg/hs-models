@@ -10,9 +10,9 @@ import Language.Haskell.TH (Name)
 import Language.Haskell.TH.Syntax (Lift)
 import Types.UserType
 
-type ModelName = String
-type FieldName = String
-type Endpoint = String
+type ModelName = String -- really? well mkName is required
+type FieldName = String -- uhhh... make it easy
+type Endpoint = String -- url piece
 
 data DisplayOptions = DisplayCreatable | DisplayEditable | DisplayEditableInline
 
@@ -36,11 +36,19 @@ adminPermissions = undefined
 superuserPermissions ∷ CRUDPermissions
 superuserPermissions = undefined
 
+data FilterOptions = FilterNone | FilterEq | FilterOrd
+    deriving stock (Eq, Ord, Lift)
+
+data OrderOptions = NotOrderable | Orderable
+    deriving stock (Eq, Ord, Lift)
+
 data Field = Field {
     lowerField :: FieldName,
     upperField :: FieldName,
     typeName   :: Name,
-    dbField   :: FieldName
+    dbField   :: FieldName,
+    filterOptions :: FilterOptions,
+    orderOptions :: OrderOptions
     -- humanName  :: String,
     -- showInCreate :: Bool,
     -- showInEdit :: Bool,
@@ -52,7 +60,9 @@ defaultField = Field {
     lowerField = error "Required: lower field",
     upperField = error "Required: upper field",
     typeName = error "Required: type name",
-    dbField = error "Required: db field"
+    dbField = error "Required: db field",
+    filterOptions = FilterNone,
+    orderOptions = NotOrderable
 }
 
 type Fields = [Field]
@@ -81,3 +91,13 @@ defaultModel = Model {
     updateFields = error "Required: updateFields",
     deleteFields = error "Required: deleteFields"
 }
+
+isFilterable :: Field -> Bool
+isFilterable Field { filterOptions = FilterEq } = True
+isFilterable Field { filterOptions = FilterOrd } = True
+isFilterable _ = False
+
+-- TODO lowerField!!!
+getFilterableFieldNames :: Model -> [String]
+getFilterableFieldNames Model { retrieveFields = Just retrieveFields' } = dbField <$> filter isFilterable retrieveFields'
+getFilterableFieldNames _ = []

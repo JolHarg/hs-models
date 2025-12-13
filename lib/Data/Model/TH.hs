@@ -8,12 +8,14 @@ module Data.Model.TH where
 import Data.Aeson
 import Data.Data
 import Data.Model
+import Data.Text (Text)
 import Data.Time
 import Data.UUID.Types
 import Language.Haskell.TH
 import Servant.API
 
 type MaybeUTCTime = Maybe UTCTime
+type MaybeText = Maybe Text
 type MaybeUUID = Maybe UUID
 
 -- Add models for CreateEntity, RetrieveEntity, UpdateEntity, DeleteEntityId
@@ -31,9 +33,10 @@ addDefaultFieldsForRetrieve ∷ Fields → Fields
 addDefaultFieldsForRetrieve fields = [
         defaultField { lowerField = "id", upperField = "Id", dbField = "id", typeName = ''UUID }
     ] <> fields <> [
-        defaultField { lowerField = "createdBy", upperField = "CreatedBy", dbField = "created_by", typeName = ''UUID },
-        defaultField { lowerField = "createdAt", upperField = "CreatedAt", dbField = "created_at", typeName = ''UTCTime }, -- Nothing for insertion
-        defaultField { lowerField = "updatedAt", upperField = "UpdatedAt", dbField = "updated_at", typeName = ''MaybeUTCTime }
+        -- we don't always want these, they are normally hidden
+        -- defaultField { lowerField = "createdBy", upperField = "CreatedBy", dbField = "created_by", typeName = ''MaybeUUID },
+        -- defaultField { lowerField = "createdAt", upperField = "CreatedAt", dbField = "created_at", typeName = ''Text }, -- Nothing for insertion
+        -- defaultField { lowerField = "updatedAt", upperField = "UpdatedAt", dbField = "updated_at", typeName = ''MaybeText }
         -- defaultField { lowerField = "deletedAt", upperField = "DeletedAt", dbField = "deleted_at", typeName = ''MaybeUTCTime } -- @TODO admin see / undelete later
     ]
 
@@ -80,6 +83,7 @@ makeCreateFieldTypes Model { singularType, createFields = Just fields } = traver
                     ConT ''FromHttpApiData,
                     ConT ''ToHttpApiData,
                     ConT ''Show,
+                    ConT ''Ord,
                     ConT ''Eq
                 ],
             DerivClause
@@ -124,6 +128,7 @@ makeRetrieveFieldTypes Model { singularType, retrieveFields = Just fields } = tr
                     ConT ''FromHttpApiData,
                     ConT ''ToHttpApiData,
                     ConT ''Show,
+                    ConT ''Ord,
                     ConT ''Eq
                 ],
             DerivClause
@@ -169,6 +174,7 @@ makeUpdateFieldTypes Model { singularType, updateFields = Just fields } = traver
                     ConT ''FromHttpApiData,
                     ConT ''ToHttpApiData,
                     ConT ''Show,
+                    ConT ''Ord,
                     ConT ''Eq
                 ],
             DerivClause
@@ -214,6 +220,7 @@ makeDeleteFieldTypes Model { singularType, deleteFields = Just fields } = traver
                     ConT ''FromHttpApiData,
                     ConT ''ToHttpApiData,
                     ConT ''Show,
+                    ConT ''Ord,
                     ConT ''Eq
                 ],
             DerivClause

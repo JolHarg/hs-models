@@ -83,6 +83,7 @@ makeCreateType model@Model { singularType, createFields = Just fields } = do
                         [
                             ConT ''Show,
                             ConT ''Eq,
+                            ConT ''Ord,
                             ConT ''Generic,
                             ConT ''Data
                         ]
@@ -126,6 +127,7 @@ makeRetrieveType model@Model { singularType, retrieveFields = Just fields } = do
                         [
                             ConT ''Show,
                             ConT ''Eq,
+                            ConT ''Ord,
                             ConT ''Generic,
                             ConT ''Data
                         ]
@@ -168,6 +170,7 @@ makeUpdateType model@Model { singularType, updateFields = Just fields } = do
                         [
                             ConT ''Show,
                             ConT ''Eq,
+                            ConT ''Ord,
                             ConT ''Generic,
                             ConT ''Data
                         ]
@@ -210,6 +213,7 @@ makeDeleteType model@Model { singularType, deleteFields = Just fields } = do
                         [
                             ConT ''Show,
                             ConT ''Eq,
+                            ConT ''Ord,
                             ConT ''Generic,
                             ConT ''Data
                         ]
