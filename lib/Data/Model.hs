@@ -7,7 +7,7 @@ import Data.Map            (Map)
 import Data.Set            (Set)
 import GHC.Stack           (HasCallStack)
 import Language.Haskell.TH (Name)
-import Language.Haskell.TH.Syntax (Lift)
+import Language.Haskell.TH.Lift (Lift)
 import Types.UserType
 
 type ModelName = String -- really? well mkName is required

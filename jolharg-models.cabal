@@ -2,8 +2,8 @@ cabal-version:      3.14
 name:               jolharg-models
 version:            0.3.0.0
 license:            AGPL-3.0-only
-author:             Dan Dart
-maintainer:         cabal@dandart.co.uk
+author:             Ember Dart
+maintainer:         cabal@emberdart.co.uk
 
 -- copyright:
 -- category:
@@ -20,15 +20,16 @@ library
 
   -- other-extensions:
   build-depends:
-    , aeson              ^>=2.2.3
+    , aeson              ^>=2.3.0
     , base               ^>=4.22
     , bytestring         ^>=0.12.2
     , containers         ^>=0.8
     , jolharg-web-types  ^>=0.3
     , servant            ^>=0.20.3
     , template-haskell   >=2.23 && <2.25
+    , template-haskell-lift   >=0.1
     , text               ^>=2.1.2
-    , time               ^>=1.15
+    , time               ^>=1.16
     , uuid-types         ^>=1.0.6
 
   -- for ghc 9.10.1
